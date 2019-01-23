@@ -1,0 +1,64 @@
+---
+title: "Data Visulaization with Examples"
+output: pdf_document
+---
+
+```{r setup, include=False}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+housing.df <- read.csv("C:\\Users\\arjun\\Documents\\GitHub\\datamining\\BostonHousing.csv")
+head(housing.df,9)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+## scatter plot with axes names
+plot(housing.df$medv ~ housing.df$lstat, xlab = "MDEV", ylab = "LSTAT")
+```
+
+```{r}
+# alternative plot with ggplot
+library(ggplot2)
+ggplot(housing.df) + geom_point(aes(x = lstat, y = medv), colour = "navy", alpha = 0.7)
+```
+
+```{r}
+## barchart of CHAS vs. mean MEDV
+# compute mean MEDV per CHAS = (0, 1)
+data.for.plot <- aggregate(housing.df$medv, by = list(housing.df$chas), FUN = mean)
+names(data.for.plot) <- c("CHAS", "MeanMEDV")
+barplot(data.for.plot$MeanMEDV, names.arg = data.for.plot$CHAS,
+        xlab = "CHAS", ylab = "Avg. MEDV")
+```
+
+
+```{r}
+# alternative plot with ggplot
+ggplot(data.for.plot) + geom_bar(aes(x = CHAS, y = MeanMEDV), stat = "identity")
+
+```
+
+```{r}
+## histogram of MEDV
+hist(housing.df$medv, xlab = "MEDV")
+```
+
+```{r}
+# alternative plot with ggplot
+ggplot(housing.df) + geom_histogram(aes(x = medv), binwidth = 5)
+```
+```{r}
+## boxplot of MEDV for different values of CHAS
+boxplot(housing.df$medv ~ housing.df$chas, xlab = "CHAS", ylab = "MEDV")
+```
+
+```{r}
+# alternative plot with ggplot
+ggplot(housing.df) + geom_boxplot(aes(x = as.factor(chas), y = medv)) + xlab("CHAS")
+```
